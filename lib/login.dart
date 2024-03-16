@@ -6,13 +6,13 @@ class login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
 
-        body: Align( alignment: Alignment.center , child:  Center(child:  Container(
+        body: Align( alignment: Alignment.center , child:  Center(child:  SizedBox(
            width: 300,
            height: 300,
 
-         child: const FormExample(),),)
+         child: FormExample(),),)
     ));
   }
 }
@@ -46,7 +46,7 @@ class _FormExampleState extends State<FormExample> {
             },
           ),
 
-          SizedBox(height: 16,),
+          const SizedBox(height: 16,),
           TextFormField(
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
@@ -59,7 +59,7 @@ class _FormExampleState extends State<FormExample> {
               return null;
             },
           ),
-          SizedBox(height: 44,),
+          const SizedBox(height: 44,),
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
