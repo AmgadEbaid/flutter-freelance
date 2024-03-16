@@ -12,22 +12,10 @@ class SearchState extends State<Search> {
 
   int currentPageIndex = 0;
   late  String _dropDownvalue ;
+  late final List<projectsType> pojectlist ;
+   late  List<freelancerType> freelancerslist;
   @override
   void initState() {
-    super.initState();
-    _dropDownvalue = widget.details;
-  }
-
-  void DropdownCallBack(String? selectedValue) {
-    if (selectedValue is String) {
-      setState(() {
-        _dropDownvalue = selectedValue;
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
     final freelancerType free221 = freelancerType(
         "amgad",
         "this me a free lancer that has alot of expereicane in alot of topics like react flutter i guss node js and so on",
@@ -39,7 +27,7 @@ class SearchState extends State<Search> {
         "i want to a new wepsite for my bussness   about it i have a resturant that have a  lot of meunues and stuff and i need some one to do it ",
         1,
         200);
-    final List<projectsType> pojectlist = [
+    pojectlist = [
       proj,
       proj,
       proj,
@@ -71,7 +59,7 @@ class SearchState extends State<Search> {
       proj,
       proj
     ];
-    final List<freelancerType> freelancerslist = [
+     freelancerslist = [
       free221,
       free221,
       free221,
@@ -91,6 +79,23 @@ class SearchState extends State<Search> {
       free221,
       free221
     ];
+    super.initState();
+    _dropDownvalue = widget.details;
+  }
+
+  void DropdownCallBack(String? selectedValue) {
+    if (selectedValue is String) {
+      setState(() {
+        _dropDownvalue = selectedValue;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+
+
     return  Container(
       child: Column(
           children: [
