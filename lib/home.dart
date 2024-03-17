@@ -16,7 +16,9 @@ class HomeState extends StatefulWidget {
   @override
   Widget build(BuildContext context) {
     return
-      ListView(
+      Scaffold(
+        appBar: AppBar(title: Text("home"),),
+        body:ListView(
 
           padding: const EdgeInsets.all(8),
           children: <Widget>[
@@ -37,7 +39,9 @@ class HomeState extends StatefulWidget {
               child: const Row( children: [ SizedBox(width: 100,child: Icon(Icons.cabin), )  ,Flexible(child: Text("welcome to freelance if you are new to our website here are a few thing to get started", ) ,),]),
             ),
           ],
-        );
+        ) ,
+      );
+
 
 
   }

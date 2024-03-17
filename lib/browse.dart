@@ -11,7 +11,6 @@ class Browse extends StatefulWidget {
 
 class BrowseState extends State<Browse> {
   int currentPageIndex = 0;
-  void _tap(String path) => context.go('b/:$path');
   @override
   Widget build(BuildContext context) {
     return
@@ -19,7 +18,6 @@ class BrowseState extends State<Browse> {
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                SizedBox(height: 480,child: Image(image: AssetImage("assets/svg.svg"),),),
                 Expanded(
                   child: ListView(
                   

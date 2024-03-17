@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-// ignore: depend_on_referenced_packages
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:untitled/browse.dart';
 import 'package:untitled/home.dart';
+import 'package:untitled/profile.dart';
+import 'package:untitled/projectPage.dart';
 import 'package:untitled/search.dart';
 
 // private navigators
@@ -75,7 +76,7 @@ final goRouter = GoRouter(
 void main() {
   // turn off the # in the URLs on the web
   usePathUrlStrategy();
-  runApp(const MyApp());
+  runApp(MaterialApp(theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.green)), home:  profile()) );
 }
 
 class MyApp extends StatelessWidget {
@@ -136,9 +137,7 @@ class ScaffoldWithNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("app"), leading: IconButton(icon:Icon( Icons.arrow_back), onPressed: (){
 
-      },),),
       body: body,
       bottomNavigationBar: NavigationBar(
         selectedIndex: selectedIndex,
