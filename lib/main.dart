@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:untitled/browse.dart';
 import 'package:untitled/home.dart';
+import 'package:untitled/login.dart';
 import 'package:untitled/profile.dart';
 import 'package:untitled/projectPage.dart';
 import 'package:untitled/search.dart';
@@ -11,9 +12,10 @@ import 'package:untitled/search.dart';
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorAKey = GlobalKey<NavigatorState>(debugLabel: 'shellA');
 final _shellNavigatorBKey = GlobalKey<NavigatorState>(debugLabel: 'shellB');
+final _shellNavigatorProfile = GlobalKey<NavigatorState>(debugLabel: 'shellB');
 
 final goRouter = GoRouter(
-  initialLocation: '/a',
+  initialLocation: '/',
   // * Passing a navigatorKey causes an issue on hot reload:
   // * https://github.com/flutter/flutter/issues/113757#issuecomment-1518421380
   // * However it's still necessary otherwise the navigator pops back to
@@ -32,7 +34,7 @@ final goRouter = GoRouter(
           navigatorKey: _shellNavigatorAKey,
           routes: [
             GoRoute(
-              path: '/a',
+              path: '/',
               pageBuilder: (context, state) => const NoTransitionPage(
                 child: HomeState(),
               ),
@@ -55,19 +57,29 @@ final goRouter = GoRouter(
                 GoRoute(
                   path: 'search/:name',
                   builder: (context, state) {
+                    final detail = state.pathParameters['name'].toString();
+                    return Search(
+                      details: detail,
+                    );
 
-                    final  detail = state.pathParameters['name'].toString();
-                    print('this the thing');
-                    print(detail);
-
-
-                    return Search(details: detail,);
-                  },                ),
+                  },
+                  routes: [
+                    GoRoute(path: "project/:name", builder: (context, state) {
+                      final name = state.pathParameters["name"].toString();
+                      return  project();
+                    }, ),
+                    GoRoute(path: "profile/:id", builder: (context, state) {
+                      final name = state.pathParameters["id"].toString();
+                      print(name);
+                      return  profile();
+                    }, )
+                  ]
+                ),
               ],
             ),
           ],
         ),
-
+       
       ],
     ),
   ],
@@ -76,8 +88,8 @@ final goRouter = GoRouter(
 void main() {
   // turn off the # in the URLs on the web
   usePathUrlStrategy();
-  runApp(MaterialApp(theme: ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.green)), home:  profile()) );
-}
+  runApp(const MyApp());}
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -99,7 +111,7 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
     Key? key,
     required this.navigationShell,
   }) : super(
-      key: key ?? const ValueKey<String>('ScaffoldWithNestedNavigation'));
+            key: key ?? const ValueKey<String>('ScaffoldWithNestedNavigation'));
   final StatefulNavigationShell navigationShell;
 
   void _goBranch(int index) {
@@ -116,7 +128,7 @@ class ScaffoldWithNestedNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return   ScaffoldWithNavigationBar(
+    return ScaffoldWithNavigationBar(
         body: navigationShell,
         selectedIndex: navigationShell.currentIndex,
         onDestinationSelected: _goBranch);
@@ -137,7 +149,6 @@ class ScaffoldWithNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: body,
       bottomNavigationBar: NavigationBar(
         selectedIndex: selectedIndex,
@@ -152,4 +163,3 @@ class ScaffoldWithNavigationBar extends StatelessWidget {
     );
   }
 }
-

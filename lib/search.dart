@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class Search extends StatefulWidget {
   final String details;
@@ -96,54 +97,55 @@ class SearchState extends State<Search> {
 
 
 
-    return  Container(
-      child: Column(
-          children: [
-            Column(
-              children: [
-                 Container(
-                    child: Container(
+    return  Scaffold(appBar: AppBar(title: Text("search"),
+    ), body: Container(
+    child: Column(
+    children: [
+        Column(
+        children: [
+        Container(
+        child: Container(
 
-                      padding: const EdgeInsets.fromLTRB(22, 12, 22, 0),
+        padding: const EdgeInsets.fromLTRB(22, 12, 22, 0),
 
-                      child: SearchBar(
-                        hintText: "Search For $_dropDownvalue",
-                                      leading: const Icon(Icons.search),
-                                      padding: const MaterialStatePropertyAll<EdgeInsets>(
-                        EdgeInsets.symmetric(horizontal: 16.0)),
+    child: SearchBar(
+    hintText: "Search For $_dropDownvalue",
+    leading: const Icon(Icons.search),
+    padding: const MaterialStatePropertyAll<EdgeInsets>(
+    EdgeInsets.symmetric(horizontal: 16.0)),
 
-                                    ),
-                    )),
-                const SizedBox(height: 24,),
-                SegmentedButton(
-                  segments: const [
-                    ButtonSegment(
-                        value: "freelancer",
-                        label: Text('freelancer'),
-                        icon: Icon(Icons.calendar_view_day)),
-                    ButtonSegment(
-                        value: "Projects",
-                        label: Text('Projects'),
-                        icon: Icon(Icons.calendar_view_week)),
-                  ],
-                  selected: <String>{_dropDownvalue},
-                  onSelectionChanged: (Set<String> newSelection) {
-                    setState(() {
-                      _dropDownvalue = newSelection.first;
-                    });
-                  },
-                ),
-              ],
-            ),
+    ),
+    )),
+    const SizedBox(height: 24,),
+    SegmentedButton(
+    segments: const [
+    ButtonSegment(
+    value: "freelancer",
+    label: Text('freelancer'),
+    icon: Icon(Icons.calendar_view_day)),
+    ButtonSegment(
+    value: "Projects",
+    label: Text('Projects'),
+    icon: Icon(Icons.calendar_view_week)),
+    ],
+    selected: <String>{_dropDownvalue},
+    onSelectionChanged: (Set<String> newSelection) {
+    setState(() {
+    _dropDownvalue = newSelection.first;
+    });
+    },
+    ),
+    ],
+    ),
 
-            _dropDownvalue == "freelancer"
-                ? Freelancer(list: freelancerslist)
-                : Projects(
-                    list: pojectlist,
-                  )
-          ],
-        ),
-    );
+    _dropDownvalue == "freelancer"
+    ? Freelancer(list: freelancerslist)
+        : Projects(
+    list: pojectlist,
+    )
+    ],
+    ),
+    ));
   }
 }
 
@@ -195,7 +197,7 @@ class Freelancer extends StatelessWidget {
             ),
             itemBuilder: (context, index) {
               return ListTile(
-                onTap: () {},
+                onTap: () => context.go('/b/search/freelancer/profile/1212'),
                 leading:  CircleAvatar( 
                     backgroundImage: AssetImage(list[index].photoUrl)),
                 title: Padding(
@@ -260,6 +262,7 @@ class Projects extends StatelessWidget {
           child: ListView.builder(
             itemCount: list.length,
             prototypeItem: ListTile(
+              onTap: () => context.go('search/fgfg/SOME'),
               title: Padding(
                 padding: const EdgeInsets.all(4.0),
                 child: Text(
@@ -287,7 +290,7 @@ class Projects extends StatelessWidget {
             ),
             itemBuilder: (context, index) {
               return ListTile(
-                onTap: () {},
+                onTap: () => context.go('/b/search/projects/project/1212'),
                 title: Padding(
                   padding: const EdgeInsets.all(4.0),
                   child: Text(
