@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:untitled/src/notifiers/auth.dart';
 
 class profile extends StatelessWidget {
   profile({super.key});
@@ -42,18 +44,20 @@ class profile extends StatelessWidget {
                   child: Text(
                       "I am a Senior developer with expertise in building native iOS applications, NodeJS API's, and Discord Bots. I can help build your project idea from scratch, through all stages of design & development, to App submission and maintenance.My Skillset:",
                       style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w100)),
+                      TextStyle(fontSize: 18, fontWeight: FontWeight.w100)),
                 ),
               )),
-          TextButton(child: const Text('change to client '), onPressed: () {}),
+        //  TextButton(child: const Text('change to client '), onPressed: () {}),
         ],
       ),
       floatingActionButton: isFreelancer
-          ? const FloatingActionButton.extended(
-              onPressed: null,
-              label: Text("chat"),
-              icon: Icon(Icons.chat),
-            )
+          ?  FloatingActionButton.extended(
+        onPressed: (){
+          context.go("/chat/messges/1");
+        },
+        label: Text("chat"),
+        icon: Icon(Icons.chat),
+      )
           : null,
     );
   }
