@@ -1,30 +1,51 @@
+
+
 import 'package:flutter/widgets.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class BookstoreAuth extends ChangeNotifier {
+  final Usersref = FirebaseFirestore.instance.collection("users");
+
   bool _signedIn = false;
+   User? _user  = null;
   bool get signedIn => _signedIn;
-  String SS = "sldfsldjkflskjdf";
 
   Future<void> signOut() async {
-    await Future<void>.delayed(const Duration(milliseconds: 200));
-    // Sign out.
-    _signedIn = false;
+     await FirebaseAuth.instance.signOut();    // Sign out.
     notifyListeners();
   }
 
-  change() {
-    SS = " hello ";
-    notifyListeners();
+
+
+  Stream<User?> userStream() {
+    return FirebaseAuth.instance.authStateChanges();
   }
 
-  Future<bool> signIn(String username, String password) async {
-    await Future<void>.delayed(const Duration(milliseconds: 200));
-
-    // Sign in. Allow any password.
-    _signedIn = true;
-    notifyListeners();
-    return _signedIn;
+  AuthStateProvider() {
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      _signedIn = user != null;
+    });
   }
 
-}
+  Future<void> signIn(String email, String password) async {
+    final credential = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password);
+    if (credential.user != null) {
+      _user = credential.user!;
+    } else {
+      print('no user!');
+    }
+  }
+  Future<DocumentReference> getUserRef () async{
+    final userId = await FirebaseAuth.instance.currentUser?.uid;
+    return Usersref.doc(userId);
+  }
+  // Sign in. Allow any password.
+
+    notifyListeners();
+
+  }
+
+

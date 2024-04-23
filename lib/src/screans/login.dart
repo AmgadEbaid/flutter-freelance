@@ -4,18 +4,20 @@ import 'package:provider/provider.dart';
 import 'package:untitled/src/notifiers/auth.dart';
 
 class login extends StatelessWidget {
-  const login({super.key});
+  login({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-
-        body: Align( alignment: Alignment.center , child:  Center(child:  SizedBox(
-           width: 350,
-           height: 350,
-
-         child: FormExample(),),)
-    ));
+        body: Align(
+            alignment: Alignment.center,
+            child: Center(
+              child: SizedBox(
+                width: 350,
+                height: 350,
+                child: FormExample(),
+              ),
+            )));
   }
 }
 
@@ -28,64 +30,77 @@ class FormExample extends StatefulWidget {
 
 class _FormExampleState extends State<FormExample> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final email = TextEditingController();
+  final password = TextEditingController();
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the
+    // widget tree.
+    email.dispose();
+    password.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-
-    return
-     Form(
-        key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            TextFormField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-
-                hintText: 'Enter your email',
-              ),
-              validator: (String? value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your email';
-                }
-                return null;
-              },
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          TextFormField(
+            controller: email,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              hintText: 'Enter your email',
             ),
-
-            const SizedBox(height: 16,),
-            TextFormField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'enter your password',
-              ),
-              validator: (String? value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
-                }
-                return null;
-              },
+            validator: (String? value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter your email';
+              }
+              return null;
+            },
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          TextFormField(
+            controller: password,
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              hintText: 'enter your password',
             ),
-            const SizedBox(height: 44,),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                      context.read<BookstoreAuth>().signIn("dfdf", "dfdf");
-                      context.go("/");
-                    // the form is invalid.
-                    if (_formKey.currentState!.validate()) {
-                      // Process data.
-                    }
-                  },
-                  child: const Text('login'),
-                ),
-              ),
-            )
-          ],
-        ),
-      );
+            validator: (String? value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter some your password';
+              }
+              return null;
+            },
+          ),
+          const SizedBox(
+            height: 44,
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: ElevatedButton(
+                onPressed: () async {
+                  await context
+                      .read<BookstoreAuth>().signIn("amgad@gmail.com","amgadebaid");
+                     // .signIn(email.text, password.text);
 
+                  context.go("/");
+                  // the form is invalid.
+                  if (_formKey.currentState!.validate()) {
+                  }
+                },
+                child: const Text('login'),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

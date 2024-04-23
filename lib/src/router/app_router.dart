@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/src/notifiers/auth.dart';
 import 'package:untitled/src/screans/browse.dart';
+import 'package:untitled/src/screans/createProject.dart';
+import 'package:untitled/src/screans/my_projet_page.dart';
 import 'package:untitled/src/screans/home.dart';
 import 'package:untitled/src/screans/login.dart';
 import 'package:untitled/src/screans/messeges.dart';
@@ -18,22 +20,13 @@ class AppRouter {
   GoRouter get router => _gorouter;
   AppRouter(this.auth);
 
-   final _rootNavigatorKey = GlobalKey<NavigatorState>();
-   final _shellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'shellA');
+  final _rootNavigatorKey = GlobalKey<NavigatorState>();
+  final _shellNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'shellA');
 
   late final GoRouter _gorouter = GoRouter(
     refreshListenable: auth,
-    redirect: (context, state) {
-      final signedIn = auth.signedIn;
-      print(signedIn);
-
-      if (state.uri.toString() != '/sign-in' && !signedIn) {
-        return '/sign-in';
-      }
-      return null;
-    },
-    navigatorKey: _rootNavigatorKey,
     initialLocation: '/',
+    navigatorKey: _rootNavigatorKey,
     routes: [
       ShellRoute(
         navigatorKey: _shellNavigatorKey,
@@ -53,34 +46,36 @@ class AppRouter {
         },
         routes: [
           GoRoute(
+            parentNavigatorKey: _shellNavigatorKey,
             path: '/',
             name: "home",
-            parentNavigatorKey: _shellNavigatorKey,
             pageBuilder: (context, state) => const MaterialPage(
               child: HomeState(),
             ),
             routes: [],
           ),
           GoRoute(
+            parentNavigatorKey: _shellNavigatorKey,
             path: '/Browse',
             name: "Browse",
-            parentNavigatorKey: _shellNavigatorKey,
             pageBuilder: (context, state) => const MaterialPage<void>(
               child: Browse(),
             ),
             routes: [
               GoRoute(
+                  parentNavigatorKey: _shellNavigatorKey,
                   path: 'search/:name',
                   name: "search",
                   pageBuilder: (context, state) {
                     final detail = state.pathParameters['name'].toString();
                     return MaterialPage(
                         child: Search(
-                          details: detail,
-                        ));
+                      details: detail,
+                    ));
                   },
                   routes: [
                     GoRoute(
+                      parentNavigatorKey: _shellNavigatorKey,
                       path: "project/:name",
                       name: "project",
                       builder: (context, state) {
@@ -89,6 +84,7 @@ class AppRouter {
                       },
                     ),
                     GoRoute(
+                        parentNavigatorKey: _shellNavigatorKey,
                         path: "profile/:name",
                         name: "profile",
                         builder: (context, state) {
@@ -97,6 +93,7 @@ class AppRouter {
                         },
                         routes: [
                           GoRoute(
+                              parentNavigatorKey: _shellNavigatorKey,
                               path: "messge/:id",
                               name: "emain",
                               pageBuilder: (context, State) =>
@@ -107,12 +104,19 @@ class AppRouter {
           ),
           GoRoute(
             parentNavigatorKey: _shellNavigatorKey,
-            path: '/create',
-            name: 'create',
-            pageBuilder: (context, state) => const MaterialPage(
-              child: Center(child: Text("create a project")),
+            path: '/MyProjects',
+            name: 'MyProjects',
+            pageBuilder: (context, state) => MaterialPage(
+              child: MyProjectsPage(),
             ),
-            routes: [],
+            routes: [
+              GoRoute(
+                path: 'create',
+                name: 'create',
+                pageBuilder: (context, state) =>
+                    MaterialPage(child: CreatePojectPage()),
+              )
+            ],
           ),
           GoRoute(
             parentNavigatorKey: _shellNavigatorKey,
@@ -124,7 +128,8 @@ class AppRouter {
             routes: [
               GoRoute(
                   path: "messges/:id",
-                  pageBuilder: (context, State) => MaterialPage(child: Messges()))
+                  pageBuilder: (context, State) =>
+                      MaterialPage(child: Messges()))
             ],
           ),
           GoRoute(
@@ -143,8 +148,15 @@ class AppRouter {
         pageBuilder: (context, state) => MaterialPage(child: login()),
       )
     ],
+    redirect: (context, state) {
+      final signedIn = auth.signedIn;
+      print(signedIn);
+
+      if (state.uri != '/sign-in' && !signedIn) {
+        return '/sign-in';
+      } else {
+        return null;
+      }
+    },
   );
-
-
 }
-

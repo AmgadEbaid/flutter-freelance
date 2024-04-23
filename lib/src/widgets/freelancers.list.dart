@@ -1,105 +1,90 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:untitled/src/models/user.dart';
+import 'package:untitled/src/notifiers/users.dart';
 
 
-class freelancerType {
-  final String name;
-  final String description;
-  final int pay;
-  final String photoUrl;
-  final int Id;
 
-  freelancerType(this.name, this.description, this.Id, this.pay, this.photoUrl);
+
+class Freelancer extends StatefulWidget {
+  const Freelancer({super.key});
+
+  @override
+  State<Freelancer> createState() => _FreelancerState();
 }
 
-class Freelancer extends StatelessWidget {
-  final List<freelancerType> list;
-  const Freelancer({super.key, required this.list});
+
+class _FreelancerState extends State<Freelancer> {
+    late final Future<List<UserModel>> freelancers ;
+  @override
+  void initState() {
+    freelancers = context.read<users>().getUsers();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: SizedBox(
-          height: .0,
-          child: ListView.builder(
-            itemCount: list.length,
-            prototypeItem: ListTile(
-              title: Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: Text(
-                  list.first.name,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-              ), subtitle: Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(list.first.description),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        "${list.first.pay}\$",
-                        style: const TextStyle(
+    return FutureBuilder(
+      future: freelancers,
+      builder: (BuildContext context, AsyncSnapshot<List<UserModel>> snapshot) {
+        final FreelancersList = snapshot.data;
+
+        if(snapshot.hasData && FreelancersList != null){
+          return Expanded(
+            child: SizedBox(
+                child: ListView.builder(
+                 itemCount: FreelancersList.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      onTap: () => context.push('/Browse/search/freelancer/profile/1212'),
+
+                      title: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Text(
+                          FreelancersList[index].name,
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                            color: Colors.green),
-                      ),
-                      const Text(" per/Hour")
-                    ],
-                  ),
-                ],
-              ),
-            ),
-              isThreeLine: true,
-            ),
-            itemBuilder: (context, index) {
-              return ListTile(
-                onTap: () => context.push('/Browse/search/freelancer/profile/1212'),
-                leading:  CircleAvatar(
-                    backgroundImage: AssetImage(list[index].photoUrl)),
-                title: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Text(
-                    list[index].name,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                subtitle: Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(list[index].description),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            "${list[index].pay}\$",
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                                color: Colors.green),
+                            fontSize: 18,
                           ),
-                          const Text(" per/Hour")
-                        ],
+                        ),
                       ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          )),
+                      subtitle: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(FreelancersList[index].Details),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  "${FreelancersList[index].pay}\$",
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                      color: Colors.green),
+                                ),
+                                const Text(" per/Hour")
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                )),
+          );
+        }else if(snapshot.hasError){
+          return Center(child: Text("error"),);
+        }else {
+          return Center(child: CircularProgressIndicator());
+        }
+
+      }
     );
   }
 }

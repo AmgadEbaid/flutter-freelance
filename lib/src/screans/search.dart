@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:untitled/src/models/project.dart';
+import 'package:untitled/src/models/user.dart';
+import 'package:untitled/src/notifiers/auth.dart';
+import 'package:untitled/src/notifiers/projects.dart';
+import 'package:untitled/src/notifiers/users.dart';
 import 'package:untitled/src/widgets/freelancers.list.dart';
 import 'package:untitled/src/widgets/projects.list.dart';
 
@@ -14,25 +20,11 @@ class Search extends StatefulWidget {
 class SearchState extends State<Search> {
   int currentPageIndex = 0;
   late String _dropDownvalue;
-  late final List<projectsType> pojectlist;
-  late List<freelancerType> freelancerslist;
   @override
   void initState() {
-    final freelancerType free221 = freelancerType(
-        "amgad",
-        "this me a free lancer that has alot of expereicane in alot of topics like react flutter i guss node js and so on",
-        2,
-        2,
-        "assets/pic2.jpg");
-    final projectsType proj = projectsType(
-        "e-commere wepsite wordpress ",
-        "i want to a new wepsite for my bussness   about it i have a resturant that have a  lot of meunues and stuff and i need some one to do it ",
-        1,
-        200);
-    pojectlist = [proj, proj, proj, proj, proj, proj, proj, proj, proj];
-    freelancerslist = [free221, free221, free221, free221, free221, free221];
-    super.initState();
     _dropDownvalue = widget.details;
+    super.initState();
+
   }
 
   void DropdownCallBack(String? selectedValue) {
@@ -103,9 +95,9 @@ class SearchState extends State<Search> {
                 ],
               ),
               _dropDownvalue == "freelancer"
-                  ? Freelancer(list: freelancerslist)
-                  : Projects(
-                      list: pojectlist,
+                  ? Freelancer()
+                  : ProjectsView(
+
                     )
             ],
           ),

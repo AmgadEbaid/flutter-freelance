@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:untitled/src/notifiers/auth.dart';
+import 'package:untitled/src/notifiers/projects.dart';
+import 'package:untitled/src/notifiers/users.dart';
 
 class HomeState extends StatefulWidget {
   const HomeState({super.key});
@@ -16,11 +18,10 @@ class HomeWidget extends State<HomeState> {
 
   @override
   Widget build(BuildContext context) {
-    final singin = context.watch<BookstoreAuth>().SS;
 
     return
       Scaffold(
-        appBar: AppBar(title: Text(singin),),
+        appBar: AppBar(title: Text("home"),),
         body:ListView(
 
           padding: const EdgeInsets.all(8),
@@ -29,9 +30,15 @@ class HomeWidget extends State<HomeState> {
               children: [
                 FilledButton(
 
-                 onPressed: ()  {context.read<BookstoreAuth>().change();},
-                  child:  Text("change title"),
+                 onPressed: ( )  {context.read<BookstoreAuth>().signOut();},
+                  child:  Text("sineout "),
                 ),
+                FilledButton(
+
+                  onPressed: ( ) async { await context.read<users>().addUser();},
+                  child:  Text("print  users "),
+                ),
+
                 Container(
                   height: 100,
                   color: Colors.green[100],

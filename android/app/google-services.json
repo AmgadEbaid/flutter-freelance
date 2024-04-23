@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "956772603917",
+    "project_id": "freelance-88349",
+    "storage_bucket": "freelance-88349.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:956772603917:android:452fd6849e506515361d44",
+        "android_client_info": {
+          "package_name": "com.example.untitled"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvagSqxuaxfJ5gssSWZ7xZibBIbVbeMhc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
